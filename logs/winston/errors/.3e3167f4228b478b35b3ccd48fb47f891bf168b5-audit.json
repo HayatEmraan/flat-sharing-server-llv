@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "E:\\Assignments L2 B2\\Assignment 8\\flat-sharing-server\\logs\\winston\\errors\\.3e3167f4228b478b35b3ccd48fb47f891bf168b5-audit.json",
+    "files": [
+        {
+            "date": 1716361898939,
+            "name": "E:\\Assignments L2 B2\\Assignment 8\\flat-sharing-server\\logs\\winston\\errors\\FSS-2024-22-05-13-error.log",
+            "hash": "f5a6e3afbaefe7f8459123bb5d5b921f0a7017c5e7c1fcd45847af1fbd8f05d0"
+        }
+    ],
+    "hashType": "sha256"
+}

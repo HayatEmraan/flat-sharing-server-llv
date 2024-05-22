@@ -1,4 +1,4 @@
-import { Active, PrismaClient } from "@prisma/client";
+import { Active, Prisma, PrismaClient } from "@prisma/client";
 import { IUser } from "../../interface";
 import { jwt } from "../../helpers/jwt";
 import { BCRYPT_CREDENTIALS, JWT_CREDENTIALS } from "../../config";
@@ -10,24 +10,25 @@ import { TUserChangePassword, TUserRoot } from "./auth.types";
 const prisma = new PrismaClient();
 
 const loginSync = async (data: IUser) => {
+  let condition: Prisma.UserWhereUniqueInput;
+
+  if (data.username) {
+    condition = {
+      username: data.username,
+    };
+  } else if (data.email) {
+    condition = {
+      email: data.email,
+    };
+  } else {
+    throw new appError(
+      "User unauthorized or not found",
+      httpStatus.UNAUTHORIZED
+    );
+  }
+
   const user = await prisma.user.findUnique({
-    where: {
-      AND: [
-        {
-          OR: [
-            {
-              username: data.username,
-            },
-            {
-              email: data.email,
-            },
-          ],
-        },
-        {
-          isActive: Active.activate,
-        },
-      ],
-    },
+    where: condition,
   });
 
   if (!user) {

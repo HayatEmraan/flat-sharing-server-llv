@@ -27,7 +27,7 @@ const changePassword = catchAsync(async (req, res) => {
     success: true,
     statusCode: httpStatus.OK,
     message: "User password changed successfully",
-    data: await authService.registerSync(email, req.body),
+    data: await authService.passwordChangeSync(email, req.body),
   });
 });
 
