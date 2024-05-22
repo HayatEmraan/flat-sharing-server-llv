@@ -23,7 +23,19 @@ const updateUserProfile = catchAsync(async (req, res) => {
   });
 });
 
+
+const updateUserRole = catchAsync(async (req, res) => {
+  await globalResponseHandler(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "User role updated successfully",
+    data: await userService.updateUserRoleSync(req.body),
+  });
+});
+
+
 export const userController = {
   getUserProfile,
   updateUserProfile,
+  updateUserRole,
 };

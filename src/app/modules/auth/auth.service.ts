@@ -1,7 +1,7 @@
 import { Active, Prisma, PrismaClient } from "@prisma/client";
-import { IUser } from "../../interface";
+import { IUser } from "../../../interface";
 import { jwt } from "../../helpers/jwt";
-import { BCRYPT_CREDENTIALS, JWT_CREDENTIALS } from "../../config";
+import { BCRYPT_CREDENTIALS, JWT_CREDENTIALS } from "../../../config";
 import { bcrypt } from "../../helpers/bcrypt";
 import appError from "../../errors/appError";
 import httpStatus from "http-status";

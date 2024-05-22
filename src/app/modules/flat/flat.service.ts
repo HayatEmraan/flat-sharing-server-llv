@@ -1,8 +1,8 @@
 import { Active, PrismaClient, Role } from "@prisma/client";
 import { sortingQuery } from "../../utils/sortingQuery";
 import { flatConstant } from "./flat.constant";
-import { TFlat } from "./flat.types";
-import { IUserEncode } from "../../interface";
+import { TFlat } from "../../../interface/flat.types";
+import { IUserEncode } from "../../../interface";
 import appError from "../../errors/appError";
 import httpStatus from "http-status";
 

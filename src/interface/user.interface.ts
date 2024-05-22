@@ -4,6 +4,13 @@ export interface IUser {
   password: string;
 }
 
+export interface IUserProfileInfo {
+  bio: string;
+  name: string;
+  profession: string;
+  address: string;
+}
+
 export interface IUserEncode {
   id: string;
   username: string;
@@ -11,4 +18,10 @@ export interface IUserEncode {
   role: string;
   iat: string;
   exp: string;
+}
+
+export interface IUserChangePayload {
+  role: string;
+  isActive: string;
+  id: string;
 }

@@ -1,5 +1,5 @@
 import app from "./app";
-import { port } from "./app/config";
+import { port } from "./config";
 import { Server } from "http";
 import { errorlogger, logger } from "./shared/logger";
 

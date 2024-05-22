@@ -1,7 +1,7 @@
 import httpStatus from "http-status";
 import appError from "../errors/appError";
 import { jwt } from "../helpers/jwt";
-import { JWT_CREDENTIALS } from "../config";
+import { JWT_CREDENTIALS } from "../../config";
 import { JwtPayload } from "jsonwebtoken";
 import { Active, PrismaClient } from "@prisma/client";
 import { NextFunction, Request, Response } from "express";
