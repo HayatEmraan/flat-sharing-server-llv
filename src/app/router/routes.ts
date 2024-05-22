@@ -12,7 +12,7 @@ const bulkRoutes = [
     routePath: authRoutes,
   },
   {
-    path: "/profile",
+    path: "/user",
     routePath: userRoutes,
   },
   {

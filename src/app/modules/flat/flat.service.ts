@@ -1,18 +1,24 @@
-import { Active, PrismaClient, Role } from "@prisma/client";
-import { sortingQuery } from "../../utils/sortingQuery";
-import { flatConstant } from "./flat.constant";
+import { Prisma, PrismaClient, Role } from "@prisma/client";
 import { TFlat } from "../../../interface/flat.types";
-import { IUserEncode } from "../../../interface";
 import appError from "../../errors/appError";
 import httpStatus from "http-status";
+import { JwtPayload } from "jsonwebtoken";
 
 const prisma = new PrismaClient();
 
 const addFlatSync = async (id: string, payload: TFlat) => {
+  const { amenities, ...flatInfo } = payload;
+
   const flatAdd = await prisma.flat.create({
     data: {
-      ...payload,
+      ...flatInfo,
       userId: id,
+      amenities: {
+        create: amenities,
+      },
+    },
+    include: {
+      amenities: true,
     },
   });
 
@@ -20,29 +26,35 @@ const addFlatSync = async (id: string, payload: TFlat) => {
 };
 
 const getFlatSync = async (query: Record<string, any>) => {
-  const { page, limit, searchTerm, sortBy, sortOrder, availability } = query;
+  const { page, limit, startPrice, endPrice, numberOfBed, location } = query;
 
   // console.log(query);
 
-  const conditions = [];
+  const conditions: Prisma.FlatWhereInput[] = [];
 
-  if (searchTerm) {
+  if (startPrice && endPrice) {
     conditions.push({
-      OR: flatConstant.searchFields.map((field) => {
-        return {
-          [field]: {
-            contains: searchTerm,
-            mode: "insensitive",
-          },
-        };
-      }),
+      price: {
+        gte: startPrice,
+        lte: endPrice,
+      },
     });
   }
 
-  if (availability === "true" || availability === "false") {
-    // console.log("yes");
+  if (numberOfBed) {
     conditions.push({
-      availability: availability === "true" ? true : false,
+      numberOfBedrooms: {
+        equals: Number(numberOfBed),
+      },
+    });
+  }
+
+  if (location) {
+    conditions.push({
+      location: {
+        contains: location,
+        mode: "insensitive",
+      },
     });
   }
 
@@ -50,14 +62,16 @@ const getFlatSync = async (query: Record<string, any>) => {
   const limitNumber = Number(limit || 10);
   const skip = (pageNumber - 1) * limitNumber;
 
-  const sorting = await sortingQuery({ sortBy, sortOrder });
   const result = await prisma.flat.findMany({
     where: {
       AND: conditions,
     },
+    include: {
+      user: true,
+      amenities: true,
+    },
     skip,
     take: limitNumber,
-    orderBy: sorting,
   });
 
   // console.dir(conditions, { depth: Infinity });
@@ -83,7 +97,7 @@ const getFlatSync = async (query: Record<string, any>) => {
 const updateFlatSync = async (
   payload: Partial<TFlat>,
   id: string,
-  user: IUserEncode
+  user: JwtPayload
 ) => {
   // checking flat profile is exit or not
 
@@ -105,24 +119,21 @@ const updateFlatSync = async (
     }
 
     updatedSync = {
-      where: {
-        id,
-        userId: user.id,
-      },
-      data: payload,
+      id,
+      userId: user.id,
     };
   } else if (user.role === Role.admin) {
     updatedSync = {
-      where: {
-        id,
-      },
-      data: payload,
+      id,
     };
   } else {
     throw new appError("Unauthorized", httpStatus.UNAUTHORIZED);
   }
   // update flat
-  return await prisma.flat.update(updatedSync);
+  return await prisma.flat.update({
+    where: updatedSync,
+    data: payload,
+  });
 };
 
 export const flatService = {

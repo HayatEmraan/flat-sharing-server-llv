@@ -3,4 +3,5 @@ export type TFlat = {
   briefDescription: string;
   location: string;
   price: number;
+  amenities: any;
 };

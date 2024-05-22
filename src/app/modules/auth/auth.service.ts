@@ -32,10 +32,7 @@ const loginSync = async (data: IUser) => {
   });
 
   if (!user) {
-    throw new appError(
-      "User unauthorized or not found",
-      httpStatus.UNAUTHORIZED
-    );
+    throw new appError("User not found", httpStatus.NOT_FOUND);
   }
 
   const compare = await bcrypt.comparePassword(
@@ -54,7 +51,7 @@ const loginSync = async (data: IUser) => {
     email: user.email,
   };
 
-  const token = await jwt.encodeToken(
+  const accessToken = await jwt.encodeToken(
     JWT_CREDENTIALS.access_key as string,
     payload,
     JWT_CREDENTIALS.access_expire as string
@@ -62,7 +59,7 @@ const loginSync = async (data: IUser) => {
 
   return {
     ...payload,
-    token,
+    accessToken,
   };
 };
 

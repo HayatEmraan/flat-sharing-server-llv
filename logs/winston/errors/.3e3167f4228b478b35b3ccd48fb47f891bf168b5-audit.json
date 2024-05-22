@@ -9,6 +9,16 @@
             "date": 1716361898939,
             "name": "E:\\Assignments L2 B2\\Assignment 8\\flat-sharing-server\\logs\\winston\\errors\\FSS-2024-22-05-13-error.log",
             "hash": "f5a6e3afbaefe7f8459123bb5d5b921f0a7017c5e7c1fcd45847af1fbd8f05d0"
+        },
+        {
+            "date": 1716377162998,
+            "name": "E:\\Assignments L2 B2\\Assignment 8\\flat-sharing-server\\logs\\winston\\errors\\FSS-2024-22-05-17-error.log",
+            "hash": "1b3f3699b885ef2d32fcb270e158ee654a53567550644359f35de4b681599c89"
+        },
+        {
+            "date": 1716379208399,
+            "name": "E:\\Assignments L2 B2\\Assignment 8\\flat-sharing-server\\logs\\winston\\errors\\FSS-2024-22-05-18-error.log",
+            "hash": "0a33d450c3353b86e4cd2e186977b7321e78897186a2e50cab4e62ddaac6ea34"
         }
     ],
     "hashType": "sha256"

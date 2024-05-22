@@ -5,9 +5,9 @@ export interface IUser {
 }
 
 export interface IUserProfileInfo {
-  bio: string;
+  bio?: string;
   name: string;
-  profession: string;
+  profession?: string;
   address: string;
 }
 

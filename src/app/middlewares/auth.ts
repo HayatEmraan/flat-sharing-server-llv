@@ -11,7 +11,8 @@ const prisma = new PrismaClient();
 const auth = (...roles: string[]) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const token = req.headers.authorization;
+      const token = req.cookies.accessToken;
+
       if (!token) {
         throw new appError(
           "Unauthorized or access not granted",

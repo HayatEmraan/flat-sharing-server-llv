@@ -3,16 +3,17 @@ import { flatController } from "./flat.controller";
 import auth from "../../middlewares/auth";
 import zodValidation from "../../middlewares/zodValidation";
 import { flatValidation } from "./flat.validation";
+import { Role } from "@prisma/client";
 
 const flatRoutes = Router();
 
 flatRoutes.post(
   "/",
-  auth("All-User"),
+  auth(Role.user),
   zodValidation(flatValidation.flatValidate),
   flatController.addFlat
 );
-flatRoutes.get("/", auth("All-User"), flatController.getFlats);
-flatRoutes.put("/:flatId", auth("All-User"), flatController.updateFlat);
+flatRoutes.get("/", flatController.getFlats);
+flatRoutes.put("/:flatId", flatController.updateFlat);
 
 export default flatRoutes;

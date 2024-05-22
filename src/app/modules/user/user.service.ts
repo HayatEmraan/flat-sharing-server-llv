@@ -1,9 +1,5 @@
 import { Active, PrismaClient } from "@prisma/client";
-import {
-  IUser,
-  IUserChangePayload,
-  IUserProfileInfo,
-} from "../../../interface";
+import { IUserProfileInfo } from "../../../interface";
 import appError from "../../errors/appError";
 import httpStatus from "http-status";
 
@@ -30,13 +26,17 @@ const getUserSync = async (id: string) => {
   };
 };
 
-const updateUserSync = async (id: string, data: Partial<IUserProfileInfo>) => {
+const updateUserSync = async (id: string, data: IUserProfileInfo) => {
   // update user profile
-  const updateUser = await prisma.userProfile.update({
+  const updateUser = await prisma.userProfile.upsert({
     where: {
       userId: id,
     },
-    data: data,
+    update: data,
+    create: {
+      ...data,
+      userId: id,
+    },
   });
 
   return updateUser;

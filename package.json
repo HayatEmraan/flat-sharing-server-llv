@@ -4,7 +4,7 @@
   "description": "",
   "main": "dist/server.js",
   "author": "Hayat <hayatprestige@gmail.com>",
-  "repository": "https://github.com/Apollo-Level2-Web-Dev/L2-B2-Assignment-8-Full-stack/blob/main/4-Flat-Shareing-Application.md",
+  "repository": "https://github.com/HayatEmraan/flat-sharing-server-llv",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
