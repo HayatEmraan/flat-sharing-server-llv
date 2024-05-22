@@ -19,6 +19,16 @@
             "date": 1716379208397,
             "name": "E:\\Assignments L2 B2\\Assignment 8\\flat-sharing-server\\logs\\winston\\successes\\FSS-2024-22-05-18-success.log",
             "hash": "892d72f7be70e8accfff02dfb9ab1490d979dbd835a98a1c056f35cc32e71fbe"
+        },
+        {
+            "date": 1716385604222,
+            "name": "E:\\Assignments L2 B2\\Assignment 8\\flat-sharing-server\\logs\\winston\\successes\\FSS-2024-22-05-19-success.log",
+            "hash": "777e8352a0f78bdbd2486744950ecaeaa0794eca13e753b54c8c464106ea910a"
+        },
+        {
+            "date": 1716386508159,
+            "name": "E:\\Assignments L2 B2\\Assignment 8\\flat-sharing-server\\logs\\winston\\successes\\FSS-2024-22-05-20-success.log",
+            "hash": "7a3bc45f94f6e6a58d07fc34e6e6dfa2f89e326ecaa953f257ea79b6d3eb14bf"
         }
     ],
     "hashType": "sha256"

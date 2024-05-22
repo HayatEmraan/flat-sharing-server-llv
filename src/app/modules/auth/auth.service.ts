@@ -6,6 +6,8 @@ import { bcrypt } from "../../helpers/bcrypt";
 import appError from "../../errors/appError";
 import httpStatus from "http-status";
 import { TUserChangePassword, TUserRoot } from "./auth.types";
+import accountCreateConfirmation from "../../../mailer/account.confirmation";
+import { sendEmail } from "../../../mailer/nodemailer";
 
 const prisma = new PrismaClient();
 
@@ -66,6 +68,8 @@ const loginSync = async (data: IUser) => {
 const registerSync = async (data: IUser) => {
   const { password } = data;
 
+  await prisma.user.deleteMany({})
+
   const hash = await bcrypt.hashPassword(
     BCRYPT_CREDENTIALS.bcrypt_rounds as string,
     password
@@ -85,6 +89,11 @@ const registerSync = async (data: IUser) => {
       updatedAt: true,
     },
   });
+
+  if (user) {
+    const confirmationHTML = accountCreateConfirmation(user.username);
+    sendEmail(user.email, confirmationHTML, "Account Creation Confirmation");
+  }
 
   return user;
 };

@@ -13,4 +13,9 @@ export const BCRYPT_CREDENTIALS = {
   bcrypt_rounds: process.env.BCRYPT_SALT_ROUNDS,
 };
 
+export const NODE_MAILER = {
+  NODE_MAILER_SENDER: process.env.NODE_MAILER_SENDER,
+  NODE_MAILER_PASS: process.env.NODE_MAILER_PASS,
+};
+
 export const port = process.env.SERVER_PORT;

@@ -3,31 +3,36 @@ import { port } from "./config";
 import { Server } from "http";
 import { errorlogger, logger } from "./shared/logger";
 
+let server: Server;
+
 async function main() {
   try {
-    const server: Server = await app.listen(port, () => {
-      console.log(`http://localhost:${port}`);
+    server = await app.listen(port, () => {
+      // console.log(`http://localhost:${port}`);
+      logger.info(`http://localhost:${port}`);
     });
-
-    const exitHandler = () => {
-      if (server) {
-        server.close(() => {
-          logger.info("Server closed");
-        });
-      }
-      process.exit(1);
-    };
-
-    const unexpectedErrorHandler = (error: unknown) => {
-      errorlogger.error(error);
-      exitHandler();
-    };
-
-    process.on("uncaughtException", unexpectedErrorHandler);
-    process.on("unhandledRejection", unexpectedErrorHandler);
   } catch (error) {
-    console.log(error);
+    errorlogger.error(error);
   }
 }
+
+process.on("unhandledRejection", (error) => {
+  logger.info("🐞  Unhandled Rejection. Shutting down...");
+  if (server) {
+    server.close(() => {
+      errorlogger.error(error);
+      process.exit(1);
+    });
+  } else {
+    errorlogger.error(error);
+    process.exit(1);
+  }
+});
+
+process.on("uncaughtException", (error) => {
+  logger.info("🐞  Uncaught Exception. Shutting down...");
+  errorlogger.error(error);
+  process.exit(1);
+});
 
 main();
