@@ -1,11 +1,12 @@
-<!DOCTYPE html>
+const emailConfirmation = (code: number) => {
+  return `<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Email Confirmation</title>
     <style>
-      body {
+       body {
         font-family: Arial, sans-serif;
         background-color: #c5bfd2;
         margin: 0;
@@ -49,17 +50,21 @@
   <body>
     <div class="container">
       <div class="header">
-        <img src="https://i.ibb.co/xYsmSpJ/Flatvue.png" alt="" />
+        <img src="https://i.ibb.co/xYsmSpJ/Flatvue.png" alt="">
       </div>
       <div class="content">
         <p>Your confirmation code is:</p>
-        <p class="code">{{confirmationCode}}</p>
+        <p class="code">${code}</p>
         <p>Please enter this code to confirm your email address.</p>
       </div>
-      <p>Best regards,<br />Flat Sharing Server LLV</p>
+      <p>Best regards,<br>Flat Sharing Server LLV</p>
       <div class="footer">
         <p>&copy; 2024 Flat Sharing Server LLV. All rights reserved.</p>
       </div>
     </div>
   </body>
 </html>
+`;
+};
+
+export default emailConfirmation;

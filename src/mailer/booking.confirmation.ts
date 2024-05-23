@@ -237,7 +237,7 @@ const bookingDeclined = (name: string) => {
                 <div id="declined" style="display: [DeclinedDisplay];">
                     <p>Unfortunately, we are unable to accommodate your booking at this time. Please contact our support team for further assistance.</p>
                     <p style="text-align: center;">
-                        <a href="mailto:support@example.com" class="button button-decline">Contact Support</a>
+                        <a href="mailto:support@example.com" style="color: white;" class="button button-decline">Contact Support</a>
                     </p>
                 </div>
                 <p>Best regards,<br>Flat Sharing Server LLV</p>

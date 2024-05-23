@@ -25,4 +25,10 @@ authRoutes.post(
   authController.changePassword
 );
 
+authRoutes.post("/check-email", authController.checkEmail);
+
+authRoutes.post("/check-username", authController.checkUsername);
+
+authRoutes.post("/confirm-mail", authController.confirmMail);
+
 export default authRoutes;

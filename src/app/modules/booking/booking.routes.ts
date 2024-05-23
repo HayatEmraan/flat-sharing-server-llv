@@ -3,26 +3,26 @@ import auth from "../../middlewares/auth";
 import zodValidation from "../../middlewares/zodValidation";
 import { bookingValidation } from "./booking.validation";
 import { bookingController } from "./booking.controller";
+import { Role } from "@prisma/client";
 
-const bookingApplication = Router();
-const bookingRequest = Router();
+const bookingRoutes = Router();
 
-bookingApplication.post(
-  "/",
-  auth("All-User"),
+bookingRoutes.post(
+  "/create-booking",
+  auth(Role.user),
   zodValidation(bookingValidation.bookingValidate),
   bookingController.bookingRequest
 );
 
-
-bookingRequest.get("/", auth("All-User"), bookingController.getBookingRequest);
-bookingRequest.put(
-  "/:bookingId",
-  auth("All-User"),
+bookingRoutes.get(
+  "/booking-info",
+  auth(Role.user, Role.admin),
+  bookingController.getBookingRequest
+);
+bookingRoutes.put(
+  "/change-status/:bookingId",
+  auth(Role.user),
   bookingController.updateBookingRequest
 );
 
-export const bookingRoutes = {
-  bookingApplication,
-  bookingRequest,
-};
+export default bookingRoutes;

@@ -24,11 +24,12 @@ const getBookingRequest = catchAsync(async (req, res) => {
 
 const updateBookingRequest = catchAsync(async (req, res) => {
   const { bookingId } = req.params;
+  const { id } = req.user;
   await globalResponseHandler(res, {
     success: true,
     statusCode: httpStatus.OK,
     message: "Booking request updated successfully",
-    data: await bookingService.updateBookingRequestSync(req.body, bookingId),
+    data: await bookingService.updateBookingRequestSync(req.body, bookingId, id),
   });
 });
 

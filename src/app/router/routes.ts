@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { bookingRoutes } from "../modules/booking/booking.routes";
 import flatRoutes from "../modules/flat/flat.routes";
 import userRoutes from "../modules/user/user.routes";
 import authRoutes from "../modules/auth/auth.routes";
+import bookingRoutes from "../modules/booking/booking.routes";
 
 const routes = Router();
 
@@ -20,12 +20,8 @@ const bulkRoutes = [
     routePath: flatRoutes,
   },
   {
-    path: "/booking-applications",
-    routePath: bookingRoutes.bookingApplication,
-  },
-  {
-    path: "/booking-requests",
-    routePath: bookingRoutes.bookingRequest,
+    path: "/booking",
+    routePath: bookingRoutes,
   },
 ];
 

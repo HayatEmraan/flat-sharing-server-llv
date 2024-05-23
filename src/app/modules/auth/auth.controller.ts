@@ -42,8 +42,38 @@ const changePassword = catchAsync(async (req, res) => {
   });
 });
 
+const confirmMail = catchAsync(async (req, res) => {
+  await globalResponseHandler(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Email confirmation code sent successfully",
+    data: await authService.confirmMail(req.body.email),
+  });
+});
+
+const checkUsername = catchAsync(async (req, res) => {
+  await globalResponseHandler(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "This username is available",
+    data: await authService.checkUsernameSync(req.body.username),
+  });
+});
+
+const checkEmail = catchAsync(async (req, res) => {
+  await globalResponseHandler(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "This email is available",
+    data: await authService.checkEmailSync(req.body.email),
+  });
+});
+
 export const authController = {
   loginUser,
   createUser,
+  checkUsername,
   changePassword,
+  confirmMail,
+  checkEmail,
 };

@@ -100,3 +100,9 @@ model Amenities {
 
   @@map("amenities")
 }
+
+model Confirm {
+  id    String @id @default(uuid())
+  email String
+  code  Int
+}

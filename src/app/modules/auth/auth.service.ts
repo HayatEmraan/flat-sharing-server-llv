@@ -8,6 +8,8 @@ import httpStatus from "http-status";
 import { TUserChangePassword, TUserRoot } from "./auth.types";
 import accountCreateConfirmation from "../../../mailer/account.confirmation";
 import { sendEmail } from "../../../mailer/nodemailer";
+import generateSixDigitCode from "./auth.utils";
+import emailConfirmation from "../../../mailer/email.confirmation";
 
 const prisma = new PrismaClient();
 
@@ -68,7 +70,7 @@ const loginSync = async (data: IUser) => {
 const registerSync = async (data: IUser) => {
   const { password } = data;
 
-  await prisma.user.deleteMany({})
+  await prisma.user.deleteMany({});
 
   const hash = await bcrypt.hashPassword(
     BCRYPT_CREDENTIALS.bcrypt_rounds as string,
@@ -186,9 +188,77 @@ const userNameOrMailChangeSync = async (
   };
 };
 
+const checkEmailSync = async (payload: string) => {
+  const checkUsernameIsExist = await prisma.user.findUnique({
+    where: {
+      email: payload,
+    },
+  });
+
+  if (checkUsernameIsExist) {
+    throw new appError(
+      `${payload} - (email is already exist)`,
+      httpStatus.CONFLICT
+    );
+  }
+
+  return {
+    available: true,
+    checking: `you can register with this email - (${payload})`,
+  };
+};
+
+const checkUsernameSync = async (payload: string) => {
+  const checkUsernameIsExist = await prisma.user.findUnique({
+    where: {
+      username: payload,
+    },
+  });
+
+  if (checkUsernameIsExist) {
+    throw new appError(
+      `${payload} - (username not available)`,
+      httpStatus.CONFLICT
+    );
+  }
+
+  return {
+    available: true,
+    checking: `you can register with this username - (${payload})`,
+  };
+};
+
+const confirmMail = async (payload: string) => {
+  const code = generateSixDigitCode();
+
+  const insertIntoConfirm = await prisma.confirm.create({
+    data: {
+      email: payload,
+      code: Number(code),
+    },
+  });
+
+  if (!insertIntoConfirm) {
+    throw new appError(
+      `something went wrong, please try again`,
+      httpStatus.INTERNAL_SERVER_ERROR
+    );
+  }
+
+  if (insertIntoConfirm) {
+    const confirmationHTML = emailConfirmation(Number(code));
+    sendEmail(payload, confirmationHTML, "Email verify Confirmation");
+  }
+
+  return insertIntoConfirm;
+};
+
 export const authService = {
   loginSync,
   registerSync,
   passwordChangeSync,
   userNameOrMailChangeSync,
+  checkUsernameSync,
+  checkEmailSync,
+  confirmMail,
 };
