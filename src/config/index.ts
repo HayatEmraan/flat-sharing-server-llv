@@ -18,4 +18,8 @@ export const NODE_MAILER = {
   NODE_MAILER_PASS: process.env.NODE_MAILER_PASS,
 };
 
+export const DOMAIN_CLIENT = {
+  domain_client_url: process.env.CLIENT_DOMAIN,
+};
+
 export const port = process.env.SERVER_PORT;
