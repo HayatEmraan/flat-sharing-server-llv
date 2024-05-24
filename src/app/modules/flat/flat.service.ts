@@ -136,8 +136,17 @@ const updateFlatSync = async (
   });
 };
 
+const getSharedFlatRequestSync = async (id: string) => {
+  return await prisma.flat.findMany({
+    where: {
+      userId: id,
+    },
+  });
+};
+
 export const flatService = {
   addFlatSync,
   getFlatSync,
   updateFlatSync,
+  getSharedFlatRequestSync,
 };

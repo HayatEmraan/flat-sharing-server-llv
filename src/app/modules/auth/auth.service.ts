@@ -1,5 +1,5 @@
-import { Active, Prisma, PrismaClient } from "@prisma/client";
-import { IUser } from "../../../interface";
+import { Active, PrismaClient } from "@prisma/client";
+import { IUser, IUserLogin } from "../../../interface";
 import { jwt } from "../../helpers/jwt";
 import { BCRYPT_CREDENTIALS, JWT_CREDENTIALS } from "../../../config";
 import { bcrypt } from "../../helpers/bcrypt";
@@ -13,26 +13,31 @@ import emailConfirmation from "../../../mailer/email.confirmation";
 
 const prisma = new PrismaClient();
 
-const loginSync = async (data: IUser) => {
-  let condition: Prisma.UserWhereUniqueInput;
-
-  if (data.username) {
-    condition = {
-      username: data.username,
-    };
-  } else if (data.email) {
-    condition = {
-      email: data.email,
-    };
-  } else {
-    throw new appError(
-      "User unauthorized or not found",
-      httpStatus.UNAUTHORIZED
-    );
-  }
-
-  const user = await prisma.user.findUnique({
-    where: condition,
+const loginSync = async (data: IUserLogin) => {
+  const user = await prisma.user.findFirst({
+    where: {
+      AND: [
+        {
+          OR: [
+            {
+              email: {
+                equals: data.emailOrUsername,
+                mode: "insensitive",
+              },
+            },
+            {
+              username: {
+                equals: data.emailOrUsername,
+                mode: "insensitive",
+              },
+            },
+          ],
+        },
+        {
+          isActive: Active.activate,
+        },
+      ],
+    },
   });
 
   if (!user) {

@@ -129,6 +129,9 @@ const updateBookingRequestSync = async (
   return updateBooking;
 };
 
+
+
+
 export const bookingService = {
   bookingRequestSync,
   getBookingRequestSync,

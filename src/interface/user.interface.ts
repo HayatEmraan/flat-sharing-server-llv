@@ -1,3 +1,9 @@
+export interface IUserLogin {
+  emailOrUsername: string;
+  password: string;
+}
+
+
 export interface IUser {
   username: string;
   email: string;

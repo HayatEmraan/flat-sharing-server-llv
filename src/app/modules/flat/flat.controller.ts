@@ -34,8 +34,19 @@ const updateFlat = catchAsync(async (req, res) => {
   });
 });
 
+const sharedFlat = catchAsync(async (req, res) => {
+  const { id } = req.user;
+  await globalResponseHandler(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Flat shared retrieve successfully",
+    data: await flatService.getSharedFlatRequestSync(id),
+  });
+});
+
 export const flatController = {
   addFlat,
   getFlats,
   updateFlat,
+  sharedFlat,
 };
