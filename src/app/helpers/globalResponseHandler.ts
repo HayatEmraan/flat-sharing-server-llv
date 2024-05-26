@@ -4,7 +4,7 @@ interface IResponse {
   success: boolean;
   statusCode: number;
   message: string;
-  data: Record<string, unknown> | Record<string, unknown>[];
+  data: Record<string, unknown> | Record<string, unknown>[] | null;
   meta?: Record<string, unknown>;
 }
 

@@ -29,6 +29,11 @@ enum Active {
   deactivate
 }
 
+enum Purpose {
+  Rent
+  Sale
+}
+
 model User {
   id          String       @id @default(uuid())
   username    String       @unique @db.VarChar(255)
@@ -61,15 +66,23 @@ model UserProfile {
 }
 
 model Flat {
-  id               String      @id @default(uuid())
-  numberOfBedrooms Int         @db.Integer
-  briefDescription String      @db.Text
-  location         String      @db.VarChar(255)
-  price            Int         @db.Integer
-  createdAt        DateTime    @default(now())
-  updatedAt        DateTime    @updatedAt
-  booking          Booking[]
-  amenities        Amenities[]
+  id                String    @id @default(uuid())
+  numberOfBedrooms  Int       @db.Integer
+  numberOfBathrooms Int       @db.Integer
+  briefDescription  String    @db.Text
+  location          String    @db.VarChar(255)
+  name              String    @db.VarChar(255)
+  category          String    @db.VarChar(255)
+  purpose           Purpose
+  area              Int       @db.Integer
+  price             Int       @db.Integer
+  landmark          Int       @db.Integer
+  taxes             Int?      @db.Integer
+  images            Json      @db.Json
+  amenities         Json      @db.Json
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  booking           Booking[]
 
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
@@ -89,16 +102,6 @@ model Booking {
   flat Flat @relation(fields: [flatId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@map("bookings")
-}
-
-model Amenities {
-  id     String @id @default(uuid())
-  image  String
-  name   String @db.VarChar(255)
-  flatId String
-  flat   Flat   @relation(fields: [flatId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-
-  @@map("amenities")
 }
 
 model Confirm {

@@ -24,6 +24,15 @@ const getFlats = catchAsync(async (req, res) => {
   });
 });
 
+const getFlat = catchAsync(async (req, res) => {
+  await globalResponseHandler(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Flat retrieved successfully",
+    data: await flatService.getSingleFlatSync(req.params.flatId),
+  });
+});
+
 const updateFlat = catchAsync(async (req, res) => {
   const { flatId } = req.params;
   await globalResponseHandler(res, {
@@ -44,9 +53,19 @@ const sharedFlat = catchAsync(async (req, res) => {
   });
 });
 
+const getFlatStats = catchAsync(async (req, res) => {
+  await globalResponseHandler(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Flats Stats retrieved successfully",
+    data: await flatService.getFlatStatsSync(),
+  });
+});
 export const flatController = {
   addFlat,
   getFlats,
   updateFlat,
   sharedFlat,
+  getFlatStats,
+  getFlat,
 };

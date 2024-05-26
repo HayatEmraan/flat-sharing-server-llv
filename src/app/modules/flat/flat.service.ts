@@ -7,18 +7,13 @@ import { JwtPayload } from "jsonwebtoken";
 const prisma = new PrismaClient();
 
 const addFlatSync = async (id: string, payload: TFlat) => {
-  const { amenities, ...flatInfo } = payload;
-
   const flatAdd = await prisma.flat.create({
     data: {
-      ...flatInfo,
+      ...payload,
       userId: id,
-      amenities: {
-        create: amenities,
-      },
     },
     include: {
-      amenities: true,
+      user: true,
     },
   });
 
@@ -26,17 +21,16 @@ const addFlatSync = async (id: string, payload: TFlat) => {
 };
 
 const getFlatSync = async (query: Record<string, any>) => {
-  const { page, limit, startPrice, endPrice, numberOfBed, location } = query;
-
-  // console.log(query);
+  const { page, limit, startPrice, endPrice, numberOfBed, location, category } =
+    query;
 
   const conditions: Prisma.FlatWhereInput[] = [];
 
   if (startPrice && endPrice) {
     conditions.push({
       price: {
-        gte: startPrice,
-        lte: endPrice,
+        gte: Number(startPrice),
+        lte: Number(endPrice),
       },
     });
   }
@@ -58,8 +52,17 @@ const getFlatSync = async (query: Record<string, any>) => {
     });
   }
 
+  if (category) {
+    conditions.push({
+      category: {
+        contains: category,
+        mode: "insensitive",
+      },
+    });
+  }
+
   const pageNumber = Number(page || 1);
-  const limitNumber = Number(limit || 10);
+  const limitNumber = Number(limit || 8);
   const skip = (pageNumber - 1) * limitNumber;
 
   const result = await prisma.flat.findMany({
@@ -68,7 +71,6 @@ const getFlatSync = async (query: Record<string, any>) => {
     },
     include: {
       user: true,
-      amenities: true,
     },
     skip,
     take: limitNumber,
@@ -144,9 +146,27 @@ const getSharedFlatRequestSync = async (id: string) => {
   });
 };
 
+const getFlatStatsSync = async () => {
+  return await prisma.flat.groupBy({
+    by: "category",
+    _count: {
+      category: true,
+    },
+  });
+};
+const getSingleFlatSync = async (id: string) => {
+  return await prisma.flat.findUnique({
+    where: {
+      id,
+    },
+  });
+};
+
 export const flatService = {
   addFlatSync,
   getFlatSync,
   updateFlatSync,
   getSharedFlatRequestSync,
+  getFlatStatsSync,
+  getSingleFlatSync,
 };
