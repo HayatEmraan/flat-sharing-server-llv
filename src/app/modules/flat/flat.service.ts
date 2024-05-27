@@ -21,11 +21,22 @@ const addFlatSync = async (id: string, payload: TFlat) => {
 };
 
 const getFlatSync = async (query: Record<string, any>) => {
-  const { page, limit, startPrice, endPrice, numberOfBed, location, category } =
-    query;
+  const {
+    page,
+    limit,
+    startPrice,
+    endPrice,
+    beds,
+    location,
+    category,
+    name,
+    purpose,
+    bathrooms,
+  } = query;
 
   const conditions: Prisma.FlatWhereInput[] = [];
 
+  console.log(startPrice, endPrice);
   if (startPrice && endPrice) {
     conditions.push({
       price: {
@@ -35,10 +46,17 @@ const getFlatSync = async (query: Record<string, any>) => {
     });
   }
 
-  if (numberOfBed) {
+  if (beds) {
     conditions.push({
       numberOfBedrooms: {
-        equals: Number(numberOfBed),
+        equals: Number(beds),
+      },
+    });
+  }
+  if (bathrooms) {
+    conditions.push({
+      numberOfBedrooms: {
+        equals: Number(bathrooms),
       },
     });
   }
@@ -57,6 +75,22 @@ const getFlatSync = async (query: Record<string, any>) => {
       category: {
         contains: category,
         mode: "insensitive",
+      },
+    });
+  }
+
+  if (name) {
+    conditions.push({
+      name: {
+        contains: name,
+        mode: "insensitive",
+      },
+    });
+  }
+  if (purpose) {
+    conditions.push({
+      purpose: {
+        equals: purpose,
       },
     });
   }

@@ -14,10 +14,10 @@ flatRoutes.post(
   flatController.addFlat
 );
 flatRoutes.get("/", flatController.getFlats);
+flatRoutes.get("/property-stats", flatController.getFlatStats);
 
 flatRoutes.get("/:flatId", flatController.getFlat);
 
-flatRoutes.get("/property-stats", flatController.getFlatStats);
 flatRoutes.put("/:flatId", auth(Role.user), flatController.updateFlat);
 
 flatRoutes.get(
@@ -25,7 +25,5 @@ flatRoutes.get(
   auth(Role.user),
   flatController.sharedFlat
 );
-
-
 
 export default flatRoutes;

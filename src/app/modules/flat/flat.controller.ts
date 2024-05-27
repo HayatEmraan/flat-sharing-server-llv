@@ -18,7 +18,7 @@ const getFlats = catchAsync(async (req, res) => {
   await globalResponseHandler(res, {
     success: true,
     statusCode: httpStatus.OK,
-    message: "Flats retrieved successfully",
+    message: "Flats are retrieved successfully",
     data,
     meta,
   });
