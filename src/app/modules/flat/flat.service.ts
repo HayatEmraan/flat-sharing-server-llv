@@ -36,7 +36,6 @@ const getFlatSync = async (query: Record<string, any>) => {
 
   const conditions: Prisma.FlatWhereInput[] = [];
 
-  console.log(startPrice, endPrice);
   if (startPrice && endPrice) {
     conditions.push({
       price: {

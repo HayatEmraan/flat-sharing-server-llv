@@ -27,17 +27,33 @@ const getUserSync = async (id: string) => {
 };
 
 const updateUserSync = async (id: string, data: IUserProfileInfo) => {
+  const { email, ...userInfo } = data;
+  let updateUser;
+  console.log(userInfo);
   // update user profile
-  const updateUser = await prisma.userProfile.upsert({
-    where: {
-      userId: id,
-    },
-    update: data,
-    create: {
-      ...data,
-      userId: id,
-    },
-  });
+  if (userInfo) {
+    updateUser = await prisma.userProfile.upsert({
+      where: {
+        userId: id,
+      },
+      update: userInfo,
+      create: {
+        ...userInfo,
+        userId: id,
+      },
+    });
+  }
+
+  if (email) {
+    await prisma.user.update({
+      where: {
+        id,
+      },
+      data: {
+        email,
+      },
+    });
+  }
 
   return updateUser;
 };

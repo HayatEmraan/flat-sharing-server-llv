@@ -3,7 +3,6 @@ export interface IUserLogin {
   password: string;
 }
 
-
 export interface IUser {
   username: string;
   email: string;
@@ -15,6 +14,8 @@ export interface IUserProfileInfo {
   name: string;
   profession?: string;
   address: string;
+  email?: string;
+  photo?: string;
 }
 
 export interface IUserEncode {

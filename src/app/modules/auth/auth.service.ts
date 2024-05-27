@@ -57,7 +57,6 @@ const loginSync = async (data: IUserLogin) => {
     id: user.id,
     role: user.role,
     username: user.username,
-    email: user.email,
   };
 
   const accessToken = await jwt.encodeToken(
@@ -106,13 +105,12 @@ const registerSync = async (data: IUser) => {
 };
 
 const passwordChangeSync = async (
-  email: string,
+  id: string,
   userCredentials: TUserChangePassword
 ) => {
   const user = await prisma.user.findUnique({
     where: {
-      email: email,
-      isActive: Active.activate,
+      id,
     },
   });
 
@@ -138,59 +136,12 @@ const passwordChangeSync = async (
 
   return await prisma.user.update({
     where: {
-      email: email,
-      isActive: Active.activate,
+      id,
     },
     data: {
       password: hash,
     },
   });
-};
-
-const userNameOrMailChangeSync = async (
-  email: string,
-  userCredentials: TUserRoot
-) => {
-  const userInfo = await prisma.user.findUnique({
-    where: {
-      email: email,
-    },
-  });
-
-  if (!userInfo) {
-    throw new appError(
-      "User unauthorized or not found",
-      httpStatus.UNAUTHORIZED
-    );
-  }
-
-  const user = await prisma.user.update({
-    where: {
-      username: userInfo.username,
-      email: userInfo.email,
-      isActive: Active.activate,
-    },
-    data: {
-      ...userCredentials,
-    },
-  });
-
-  const payload = {
-    id: user.id,
-    role: user.role,
-    username: user.username,
-    email: user.email,
-  };
-
-  const token = await jwt.encodeToken(
-    JWT_CREDENTIALS.access_key as string,
-    payload,
-    JWT_CREDENTIALS.access_expire as string
-  );
-  return {
-    ...payload,
-    token,
-  };
 };
 
 const checkEmailSync = async (payload: string) => {
@@ -262,7 +213,6 @@ export const authService = {
   loginSync,
   registerSync,
   passwordChangeSync,
-  userNameOrMailChangeSync,
   checkUsernameSync,
   checkEmailSync,
   confirmMail,

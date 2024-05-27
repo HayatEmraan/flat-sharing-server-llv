@@ -35,12 +35,12 @@ const createUser = catchAsync(async (req, res) => {
 });
 
 const changePassword = catchAsync(async (req, res) => {
-  const { email } = req.user;
+  const { id } = req.user;
   await globalResponseHandler(res, {
     success: true,
     statusCode: httpStatus.OK,
     message: "User password changed successfully",
-    data: await authService.passwordChangeSync(email, req.body),
+    data: await authService.passwordChangeSync(id, req.body),
   });
 });
 

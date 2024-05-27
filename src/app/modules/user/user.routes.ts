@@ -7,10 +7,14 @@ import { Role } from "@prisma/client";
 
 const userRoutes = Router();
 
-userRoutes.get("/profile", auth(Role.admin, Role.user), userController.getUserProfile);
+userRoutes.get(
+  "/profile",
+  auth(Role.admin, Role.user),
+  userController.getUserProfile
+);
 userRoutes.put(
   "/profile",
-  zodValidation(userValidation.userValidate),
+  // zodValidation(userValidation.userValidate),
   auth(Role.admin, Role.user),
   userController.updateUserProfile
 );

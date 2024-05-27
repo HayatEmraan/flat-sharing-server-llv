@@ -3,14 +3,12 @@ import { z } from "zod";
 
 const userValidate = z.object({
   body: z.object({
+    email: z.string().optional(),
+    photo: z.string().optional(),
     bio: z.string().optional(),
     profession: z.string().optional(),
-    address: z.string({
-      required_error: "address is required",
-    }),
-    name: z.string({
-      required_error: "name is required",
-    }),
+    address: z.string().optional(),
+    name: z.string().optional(),
   }),
 });
 
