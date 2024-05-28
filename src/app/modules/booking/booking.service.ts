@@ -1,9 +1,10 @@
-import { PrismaClient, Status } from "@prisma/client";
+import { PrismaClient, Role, Status } from "@prisma/client";
 import { bookingNotification } from "../../../mailer/booking.confirmation";
 import { sendEmail } from "../../../mailer/nodemailer";
 import appError from "../../errors/appError";
 import httpStatus from "http-status";
 import { getCurrentDate } from "./booking.utils";
+import { JwtPayload } from "jsonwebtoken";
 
 const prisma = new PrismaClient();
 
@@ -54,31 +55,73 @@ const bookingRequestSync = async (
   return booking;
 };
 
-const getBookingRequestSync = async () => {
-  return await prisma.booking.findMany({});
+const getBookingRequestSync = async (user: JwtPayload) => {
+  let result;
+  if (user.role === Role.admin) {
+    result = await prisma.booking.findMany({
+      select: {
+        flat: true,
+        status: true,
+        id: true,
+        updatedAt: true,
+        createdAt: true,
+      },
+    });
+  } else {
+    result = await prisma.booking.findMany({
+      where: {
+        userId: user.id,
+      },
+      select: {
+        flat: true,
+        status: true,
+        id: true,
+        updatedAt: true,
+        createdAt: true,
+      },
+    });
+  }
+  return result;
 };
 
 const updateBookingRequestSync = async (
   payload: { status: Status },
   bookingId: string,
-  id: string
+  user: JwtPayload
 ) => {
-  const booking = await prisma.booking.findUnique({
-    where: {
-      id: bookingId,
-      flat: {
-        userId: id,
+  let booking;
+  if (user.role === Role.admin) {
+    booking = await prisma.booking.findUnique({
+      where: {
+        id: bookingId,
       },
-    },
-    include: {
-      flat: true,
-      user: {
-        include: {
-          userprofile: true,
+      include: {
+        flat: true,
+        user: {
+          include: {
+            userprofile: true,
+          },
         },
       },
-    },
-  });
+    });
+  } else {
+    booking = await prisma.booking.findUnique({
+      where: {
+        id: bookingId,
+        flat: {
+          userId: user.id,
+        },
+      },
+      include: {
+        flat: true,
+        user: {
+          include: {
+            userprofile: true,
+          },
+        },
+      },
+    });
+  }
 
   if (!booking) {
     throw new appError("booking info is not found", httpStatus.NOT_FOUND);
@@ -128,9 +171,6 @@ const updateBookingRequestSync = async (
 
   return updateBooking;
 };
-
-
-
 
 export const bookingService = {
   bookingRequestSync,

@@ -9,7 +9,7 @@ const bookingRoutes = Router();
 
 bookingRoutes.post(
   "/create-booking",
-  auth(Role.user),
+  auth(Role.user, Role.admin),
   zodValidation(bookingValidation.bookingValidate),
   bookingController.bookingRequest
 );
@@ -21,7 +21,7 @@ bookingRoutes.get(
 );
 bookingRoutes.put(
   "/change-status/:bookingId",
-  auth(Role.user),
+  auth(Role.user, Role.admin),
   bookingController.updateBookingRequest
 );
 

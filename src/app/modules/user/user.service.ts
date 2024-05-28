@@ -92,6 +92,7 @@ const getAllUserSync = async (id: string) => {
     },
     select: {
       id: true,
+      role: true,
       createdAt: true,
       username: true,
       email: true,
@@ -99,6 +100,9 @@ const getAllUserSync = async (id: string) => {
     },
   });
 };
+
+
+
 
 export const userService = {
   getUserSync,
