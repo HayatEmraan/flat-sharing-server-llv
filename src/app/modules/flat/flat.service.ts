@@ -94,6 +94,11 @@ const getFlatSync = async (query: Record<string, any>) => {
     });
   }
 
+  conditions.push({
+    isDeleted: {
+      equals: false,
+    },
+  });
   const pageNumber = Number(page || 1);
   const limitNumber = Number(limit || 8);
   const skip = (pageNumber - 1) * limitNumber;
@@ -182,6 +187,9 @@ const getSharedFlatRequestSync = async (id: string) => {
 const getFlatStatsSync = async () => {
   return await prisma.flat.groupBy({
     by: "category",
+    where: {
+      isDeleted: false,
+    },
     _count: {
       category: true,
     },
@@ -195,6 +203,32 @@ const getSingleFlatSync = async (id: string) => {
   });
 };
 
+const deleteFlatSync = async (id: string, user: JwtPayload) => {
+  let result;
+  if (user.role === Role.admin) {
+    result = await prisma.flat.update({
+      where: {
+        id,
+      },
+      data: {
+        isDeleted: true,
+      },
+    });
+  } else {
+    result = await prisma.flat.update({
+      where: {
+        id,
+        userId: user.id,
+      },
+      data: {
+        isDeleted: true,
+      },
+    });
+  }
+
+  return result;
+};
+
 export const flatService = {
   addFlatSync,
   getFlatSync,
@@ -202,4 +236,5 @@ export const flatService = {
   getSharedFlatRequestSync,
   getFlatStatsSync,
   getSingleFlatSync,
+  deleteFlatSync,
 };

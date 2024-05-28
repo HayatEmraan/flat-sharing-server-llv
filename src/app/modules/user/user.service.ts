@@ -82,8 +82,27 @@ const updateUserRoleSync = async (userPayload: any) => {
   });
 };
 
+const getAllUserSync = async (id: string) => {
+  return await prisma.user.findMany({
+    where: {
+      isActive: Active.activate,
+      id: {
+        not: id,
+      },
+    },
+    select: {
+      id: true,
+      createdAt: true,
+      username: true,
+      email: true,
+      userprofile: true,
+    },
+  });
+};
+
 export const userService = {
   getUserSync,
   updateUserSync,
   updateUserRoleSync,
+  getAllUserSync,
 };

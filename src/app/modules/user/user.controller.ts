@@ -23,7 +23,6 @@ const updateUserProfile = catchAsync(async (req, res) => {
   });
 });
 
-
 const updateUserRole = catchAsync(async (req, res) => {
   await globalResponseHandler(res, {
     success: true,
@@ -33,9 +32,19 @@ const updateUserRole = catchAsync(async (req, res) => {
   });
 });
 
+const getAllUsers = catchAsync(async (req, res) => {
+  const { id } = req.user;
+  await globalResponseHandler(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Users retrieve successfully",
+    data: await userService.getAllUserSync(id),
+  });
+});
 
 export const userController = {
   getUserProfile,
   updateUserProfile,
   updateUserRole,
+  getAllUsers,
 };

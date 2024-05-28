@@ -54,9 +54,9 @@ model UserProfile {
   id         String   @id @default(uuid())
   userId     String   @unique
   bio        String?  @db.VarChar(255)
-  name       String?   @db.VarChar(255)
+  name       String?  @db.VarChar(255)
   profession String?  @db.VarChar(255)
-  address    String?   @db.VarChar(255)
+  address    String?  @db.VarChar(255)
   photo      String?
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
@@ -81,6 +81,7 @@ model Flat {
   taxes             Int?      @db.Integer
   images            Json      @db.Json
   amenities         Json      @db.Json
+  isDeleted         Boolean   @default(false)
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
   booking           Booking[]

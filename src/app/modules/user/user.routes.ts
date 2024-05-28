@@ -12,6 +12,14 @@ userRoutes.get(
   auth(Role.admin, Role.user),
   userController.getUserProfile
 );
+
+// auth(Role.admin),
+userRoutes.get(
+  "/get-users",
+  auth(Role.admin, Role.user),
+  userController.getAllUsers
+);
+
 userRoutes.put(
   "/profile",
   // zodValidation(userValidation.userValidate),

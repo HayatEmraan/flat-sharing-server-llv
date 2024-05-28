@@ -61,6 +61,17 @@ const getFlatStats = catchAsync(async (req, res) => {
     data: await flatService.getFlatStatsSync(),
   });
 });
+
+const deleteFlat = catchAsync(async (req, res) => {
+  const { flatId } = req.params;
+  await globalResponseHandler(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Flat deleted successfully",
+    data: await flatService.deleteFlatSync(flatId, req.user),
+  });
+});
+
 export const flatController = {
   addFlat,
   getFlats,
@@ -68,4 +79,5 @@ export const flatController = {
   sharedFlat,
   getFlatStats,
   getFlat,
+  deleteFlat,
 };

@@ -74,7 +74,7 @@ const loginSync = async (data: IUserLogin) => {
 const registerSync = async (data: IUser) => {
   const { password } = data;
 
-  await prisma.user.deleteMany({});
+  // await prisma.user.deleteMany({});
 
   const hash = await bcrypt.hashPassword(
     BCRYPT_CREDENTIALS.bcrypt_rounds as string,
