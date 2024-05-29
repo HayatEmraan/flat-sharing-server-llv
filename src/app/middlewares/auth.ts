@@ -48,6 +48,7 @@ const auth = (...roles: string[]) => {
       });
 
       if (!findUser) {
+        res.clearCookie("accessToken");
         throw new appError(
           "User unauthorized or not found",
           httpStatus.UNAUTHORIZED

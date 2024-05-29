@@ -31,4 +31,10 @@ authRoutes.post("/check-username", authController.checkUsername);
 
 authRoutes.post("/confirm-mail", authController.confirmMail);
 
+authRoutes.get(
+  "/checker",
+  auth(Role.admin, Role.user),
+  authController.checkUser
+);
+
 export default authRoutes;

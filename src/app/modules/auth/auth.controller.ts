@@ -71,6 +71,17 @@ const checkEmail = catchAsync(async (req, res) => {
   });
 });
 
+const checkUser = catchAsync(async (req, res) => {
+  await globalResponseHandler(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Check user successful",
+    data: {
+      result: "valid user",
+    },
+  });
+});
+
 export const authController = {
   loginUser,
   createUser,
@@ -78,4 +89,5 @@ export const authController = {
   changePassword,
   confirmMail,
   checkEmail,
+  checkUser,
 };
