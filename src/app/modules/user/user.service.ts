@@ -101,12 +101,27 @@ const getAllUserSync = async (id: string) => {
   });
 };
 
+const getMyProfileSync = async (id: string) => {
+  const userProfile = await prisma.userProfile.findUnique({
+    where: {
+      userId: id,
+    },
+  });
 
+  if (!userProfile) {
+    throw new appError(
+      "user profile not complete",
+      httpStatus.EXPECTATION_FAILED
+    );
+  }
 
+  return userProfile;
+};
 
 export const userService = {
   getUserSync,
   updateUserSync,
   updateUserRoleSync,
   getAllUserSync,
+  getMyProfileSync,
 };

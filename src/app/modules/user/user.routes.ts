@@ -16,7 +16,7 @@ userRoutes.get(
 // auth(Role.admin),
 userRoutes.get(
   "/get-users",
-  auth(Role.admin, Role.user),
+  auth(Role.admin),
   userController.getAllUsers
 );
 
@@ -34,6 +34,6 @@ userRoutes.patch(
   userController.updateUserRole
 );
 
-
+userRoutes.get("/get-my-profile", auth(Role.admin, Role.user), userController.getMyProfile)
 
 export default userRoutes;
