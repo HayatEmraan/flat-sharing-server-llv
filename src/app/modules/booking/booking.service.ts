@@ -70,6 +70,37 @@ const getBookingRequestSync = async (user: JwtPayload) => {
   } else {
     result = await prisma.booking.findMany({
       where: {
+        flat: {
+          userId: user.id,
+        },
+      },
+      select: {
+        flat: true,
+        status: true,
+        id: true,
+        updatedAt: true,
+        createdAt: true,
+      },
+    });
+  }
+  return result;
+};
+
+const getBookingByRequestSync = async (user: JwtPayload) => {
+  let result;
+  if (user.role === Role.admin) {
+    result = await prisma.booking.findMany({
+      select: {
+        flat: true,
+        status: true,
+        id: true,
+        updatedAt: true,
+        createdAt: true,
+      },
+    });
+  } else {
+    result = await prisma.booking.findMany({
+      where: {
         userId: user.id,
       },
       select: {
@@ -176,4 +207,5 @@ export const bookingService = {
   bookingRequestSync,
   getBookingRequestSync,
   updateBookingRequestSync,
+  getBookingByRequestSync,
 };

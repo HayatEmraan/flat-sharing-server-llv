@@ -38,8 +38,19 @@ const updateBookingRequest = catchAsync(async (req, res) => {
   });
 });
 
+const getBookingByRequest = catchAsync(async (req, res) => {
+  const user = req.user;
+  await globalResponseHandler(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Booking requests retrieved successfully",
+    data: await bookingService.getBookingByRequestSync(user),
+  });
+});
+
 export const bookingController = {
   bookingRequest,
   getBookingRequest,
   updateBookingRequest,
+  getBookingByRequest,
 };

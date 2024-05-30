@@ -19,6 +19,13 @@ bookingRoutes.get(
   auth(Role.user, Role.admin),
   bookingController.getBookingRequest
 );
+
+bookingRoutes.get(
+  "/booking-sync-info",
+  auth(Role.user, Role.admin),
+  bookingController.getBookingByRequest
+);
+
 bookingRoutes.put(
   "/change-status/:bookingId",
   auth(Role.user, Role.admin),
