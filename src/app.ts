@@ -8,7 +8,7 @@ import routes from "./app/router/routes";
 import morgan from "morgan";
 
 const corsOption = {
-  origin: ["http://localhost:3000"],
+  origin: ["http://localhost:3000", "https://flat-sharing-client.vercel.app"],
   preflightContinue: true,
   allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
   credentials: true,
